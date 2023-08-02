@@ -8,9 +8,9 @@ import static org.mockito.Mockito.when;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -21,10 +21,29 @@ import com.mehmood.studentportal.repository.StudentRepository;
 class StudentServiceUnitTest {
 
 	@Mock
-	private StudentRepository studentRepository;
-
-	@InjectMocks
+	private StudentRepository studentRepository;	
 	private StudentService studentService;
+	
+	@BeforeEach
+	void setUp() {
+		studentService = new StudentService(studentRepository);
+	}
+	
+	@Test
+	void canGetAllStudents() {
+		// when 
+		studentService.getAllStudents();
+		
+		//then
+		verify(studentRepository).findAll();
+		
+	}
+	
+	@Test
+	void canGetAStudent() {
+		studentService.findStudentById(1);
+		verify(studentRepository).findById(1);
+	}
 
 	@Test
 	void findAll_should_return_student_list() {
